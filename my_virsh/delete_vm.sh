@@ -7,5 +7,7 @@ for domain_name in $@; do
   virsh destroy $domain_name
   virsh undefine $domain_name
   rm -rf $path
+  echo $domain_name
+  sed -i '/'"$domain_name"'/d'  /etc/hosts
 done
 

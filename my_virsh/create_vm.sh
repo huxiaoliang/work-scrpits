@@ -10,6 +10,9 @@ function post_config() {
   # to resove vi/vim auto indent issuse by copy
   # from external
   rm -rf /mnt/root/.vimrc
+  # set host/vm name resove
+  echo "$public_ip $hostname" >> /etc/hosts
+  
 }
 
 function set_proxy() {
@@ -24,6 +27,9 @@ cat << EOF
 Environment="HTTPS_PROXY=https://$proxy_host:$proxy_port" "HTTP_PROXY=http://$proxy_host:$proxy_port" "NO_PROXY=localhost,127.0.0.1"
 EOF
  ) > /mnt/etc/systemd/system/docker.service.d/http-proxy.conf
+  # set console 
+  echo "alias setp='export http_proxy=http://$proxy_host:$proxy_port && export https_proxy=https://$proxy_host:$proxy_port'" >> /mnt/root/.bashrc
+  echo "alias unsetp='unset http_proxy && unset https_proxy'" >>/mnt/root/.bashrc
 }
 
 
