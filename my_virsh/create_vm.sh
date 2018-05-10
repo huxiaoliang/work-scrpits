@@ -2,8 +2,11 @@
 
 base_img_path=/var/lib/libvirt/images/centos7u2.img
 vm_img_dir=/var/lib/libvirt/images/
-proxy_host="9.21.49.147"
-proxy_port=8118
+#proxy_host="9.21.49.147"
+#proxy_port=8118
+
+proxy_host="9.21.63.193"
+proxy_port=8123
 
 function post_config() {
   echo "post config ..."
@@ -54,11 +57,11 @@ cat << EOF
 DEVICE=ens3
 TYPE=Ethernet
 ONBOOT=yes
-NM_CONTROLLED=yes
 BOOTPROTO=static
 IPADDR=$1
 NETMASK=255.255.255.0
 GATEWAY=9.111.250.2
+
 DNS1=9.111.248.111
 DNS2=9.111.248.112
 EOF
@@ -82,7 +85,7 @@ function install_vm() {
   set_proxy
   post_config
   umount /mnt
-  virt-install --import --name=$hostname --vcpus=8 --ram 8192 --boot hd --disk path=$vm_img_dir/$hostname.img,format=qcow2,bus=virtio --network bridge=br0 --autostart --graphics vnc,keymap=en-us --noautoconsole
+  virt-install --import --name=$hostname --vcpus=8 --ram 8192 --boot hd --disk path=$vm_img_dir/$hostname.img,format=qcow2,bus=virtio  --network bridge=br0 --network bridge=virbr0 --autostart --graphics vnc,keymap=en-us --noautoconsole
 }
 
 
